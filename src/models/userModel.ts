@@ -1,5 +1,5 @@
 import { ReqUserType, UserType } from "../app/types.js";
-const { randomUUID } = await import("node:crypto");
+import { randomUUID } from "node:crypto";
 import usersData, { setNewUserData } from "../data/users.js";
 
 const getAll = async () => {
