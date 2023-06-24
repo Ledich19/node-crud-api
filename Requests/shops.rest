@@ -3,3 +3,37 @@ GET http://localhost:4000/api/users
 
 GET http://localhost:4000/api/users/1
 ###
+
+POST http://localhost:4000/api/users
+Content-Type: application/json
+
+{
+  "username": "new user",
+  "age": 30,
+  "hobbies": ["ho-1", "ho-2"]
+}
+###
+
+POST http://localhost:4000/api/users
+Content-Type: application/json
+
+{
+  "username": "new user",
+  "age": "df",
+  "hobbies": ["ho-1", "ho-2"]
+}
+###
+
+PUT http://localhost:4000/api/users/1
+Content-Type: application/json
+
+{
+  "hobbies": ["ho-1", "ho-2", "ho-3"]
+}
+###
+
+DELETE http://localhost:4000/api/users/1
+Content-Type: application/json
+
+
+

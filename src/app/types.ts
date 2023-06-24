@@ -4,3 +4,5 @@ export type UserType = {
   age: number;
   hobbies: string[] | [];
 };
+
+export type ReqUserType = Omit<UserType, "id">
