@@ -74,16 +74,16 @@ const updateUserById = async (req: IncomingMessage, res: ServerResponse) => {
     if (!user) {
       res.writeHead(404, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ error: "user does not exist" }));
-      return
+      return;
     }
     if (id && !isUUID(id)) {
       res.writeHead(400, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ error: "user not valid" }));
-      return
+      return;
     }
 
     const bodyData = JSON.parse(body) as ReqUserType;
-    const updatedUser = await userModel.update(id || '', bodyData);
+    const updatedUser = await userModel.update(id || "", bodyData);
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(updatedUser));
   } catch (error) {
@@ -102,12 +102,12 @@ const deleteUserById = async (req: IncomingMessage, res: ServerResponse) => {
     if (!user) {
       res.writeHead(404, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ error: "user does not exist" }));
-      return
+      return;
     }
     if (id && !isUUID(id)) {
       res.writeHead(400, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ error: "user not valid" }));
-      return
+      return;
     }
 
     res.writeHead(204, { "Content-Type": "application/json" });

@@ -1,9 +1,9 @@
 import { ReqUserType, UserType } from "../app/types.js";
-const { scrypt, randomUUID } = await import("node:crypto");
+const { randomUUID } = await import("node:crypto");
 import usersData, { setNewUserData } from "../data/users.js";
 
 const getAll = async () => {
-  return new Promise((resolve, _) => resolve(usersData));
+  return new Promise((resolve) => resolve(usersData));
 };
 const getById = async (id: string) => {
   return new Promise((resolve, reject) => {
@@ -17,12 +17,11 @@ const getById = async (id: string) => {
 };
 
 const create = async (user: ReqUserType) => {
-  return new Promise((resolve, _) => {
+  return new Promise((resolve) => {
     const newUser = {
       id: randomUUID(),
       ...user,
     };
-    console.log(newUser);
     usersData.push(newUser);
     resolve(newUser);
   });
@@ -51,7 +50,6 @@ const update = async (id: string, data: Partial<UserType>) => {
 
 const deleteById = async (id: string) => {
   return new Promise((resolve, reject) => {
-    const userLen = usersData.length;
     const newUserData = usersData.filter((user) => user.id !== id);
 
     setNewUserData(newUserData);
