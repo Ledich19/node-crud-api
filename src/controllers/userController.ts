@@ -9,7 +9,10 @@ const getUsers = async (req: IncomingMessage, res: ServerResponse) => {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(users));
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: error.message }));
+    }
   }
 };
 

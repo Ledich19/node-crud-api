@@ -5,7 +5,10 @@ import usersController from "./controllers/userController.js";
 const server = http.createServer((req, res) => {
   const url = req.url;
   if (url?.match(/\/api\/users/)) {
-    usersController(req, res)
+    usersController(req, res);
+  } else {
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: `Sorry, page does not exist` }));
   }
 });
 
