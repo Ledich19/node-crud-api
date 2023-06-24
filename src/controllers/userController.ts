@@ -19,9 +19,21 @@ const getUsers = async (req: IncomingMessage, res: ServerResponse) => {
 const getUserById = async (req: IncomingMessage, res: ServerResponse) => {
   const id = req.url?.split("/")[3];
   try {
-    const users = await userModel.getById(id || "");
+    const user = await userModel.getById(id || "");
+    if (!user) {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "user does not exist" }));
+      return;
+    }
+    if (id && !isUUID(id)) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "user not valid" }));
+      return;
+    }
+
+
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(users));
+    res.end(JSON.stringify(user));
   } catch (error) {
     console.error(error);
   }
