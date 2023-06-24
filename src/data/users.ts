@@ -1,18 +1,22 @@
 import { UserType } from "../app/types.js";
 
-const usersData: UserType[] = [
+let usersData: UserType[] = [
   {
-    id: "1",
+    id: "148f8be7-1131-460d-bb78-53be978c18bb",
     username: "name (string, required)",
     age: 76,
     hobbies: [],
   },
   {
-    id: "2",
+    id: "fd197a49-e76a-4532-be57-3e56ef059880",
     username: "name-2",
     age: 23,
     hobbies: ["hobby", "hobby-2"],
   },
 ];
+
+export const setNewUserData = (arr: UserType[]) => {
+usersData = arr
+}
 
 export default usersData

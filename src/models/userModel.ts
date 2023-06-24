@@ -1,6 +1,6 @@
 import { ReqUserType, UserType } from "../app/types.js";
 const { scrypt, randomUUID } = await import("node:crypto");
-import usersData from "../data/users.js";
+import usersData, { setNewUserData } from "../data/users.js";
 
 const getAll = async () => {
   return new Promise((resolve, _) => resolve(usersData));
@@ -33,10 +33,19 @@ const update = async (id: string, data: Partial<UserType>) => {
     const user = usersData.find((user) => user.id === id);
     if (user) {
       const newUser = Object.assign(user, data);
-      usersData.push(newUser);
+      setNewUserData(
+        usersData.map((user) => {
+          if (user.id === id) {
+            return newUser;
+          } else {
+            return user;
+          }
+        })
+      );
+
       resolve(newUser);
     }
-    reject(`No todo with id ${id} found`);
+    reject(`No user with id ${id} found`);
   });
 };
 

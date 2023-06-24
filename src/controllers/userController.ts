@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http";
 import userModel from "../models/userModel.js";
 import { ReqUserType } from "../app/types.js";
-import { getDataFromRequest } from "../utils/healper.js";
+import { getDataFromRequest, isUUID } from "../utils/healper.js";
 
 const getUsers = async (req: IncomingMessage, res: ServerResponse) => {
   try {
@@ -62,10 +62,36 @@ const createUser = async (req: IncomingMessage, res: ServerResponse) => {
   }
 };
 
-const updateUserById = (req: IncomingMessage, res: ServerResponse) => {
-  const id = req.url?.split("/")[3];
-  console.log("PUT");
+const updateUserById = async (req: IncomingMessage, res: ServerResponse) => {
+  try {
+    const id = req.url?.split("/")[3];
+    const body = await getDataFromRequest(req);
+    const user = await userModel.getById(id || "");
+    if (typeof body !== "string") {
+      throw new Error("Invalid request body");
+    }
+
+    if (!user) {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "user does not exist" }));
+    }
+    if (id && !isUUID(id)) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "user not valid" }));
+    }
+
+    const bodyData = JSON.parse(body) as ReqUserType;
+    const updatedUser = await userModel.update(id || '', bodyData);
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(updatedUser));
+  } catch (error) {
+    if (error instanceof Error) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: error.message }));
+    }
+  }
 };
+
 const deleteUserById = (req: IncomingMessage, res: ServerResponse) => {
   const id = req.url?.split("/")[3];
   console.log("DELETE");
