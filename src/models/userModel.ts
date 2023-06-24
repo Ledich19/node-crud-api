@@ -52,7 +52,9 @@ const update = async (id: string, data: Partial<UserType>) => {
 const deleteById = async (id: string) => {
   return new Promise((resolve, reject) => {
     const userLen = usersData.length;
-    const newUserData = usersData.map((user) => user.id !== id);
+    const newUserData = usersData.filter((user) => user.id !== id);
+
+    setNewUserData(newUserData);
 
     if (usersData.length === newUserData.length) {
       reject(`No todo with id ${id} found`);

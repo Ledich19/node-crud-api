@@ -74,10 +74,12 @@ const updateUserById = async (req: IncomingMessage, res: ServerResponse) => {
     if (!user) {
       res.writeHead(404, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ error: "user does not exist" }));
+      return
     }
     if (id && !isUUID(id)) {
       res.writeHead(400, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ error: "user not valid" }));
+      return
     }
 
     const bodyData = JSON.parse(body) as ReqUserType;
@@ -92,9 +94,30 @@ const updateUserById = async (req: IncomingMessage, res: ServerResponse) => {
   }
 };
 
-const deleteUserById = (req: IncomingMessage, res: ServerResponse) => {
-  const id = req.url?.split("/")[3];
-  console.log("DELETE");
+const deleteUserById = async (req: IncomingMessage, res: ServerResponse) => {
+  try {
+    const id = req.url?.split("/")[3];
+    const user = await userModel.getById(id || "");
+
+    if (!user) {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "user does not exist" }));
+      return
+    }
+    if (id && !isUUID(id)) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "user not valid" }));
+      return
+    }
+
+    res.writeHead(204, { "Content-Type": "application/json" });
+    res.end();
+  } catch (error) {
+    if (error instanceof Error) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: error.message }));
+    }
+  }
 };
 
 const usersController = (req: IncomingMessage, res: ServerResponse) => {
