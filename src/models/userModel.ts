@@ -12,8 +12,10 @@ const getById = async (id: string) => {
     if (user) {
       resolve(user);
     } else {
-      reject(`Todo with id ${id} not found `);
+      reject(`Todo with id ${id} not found`);
     }
+  }).catch(() => {
+    return null; 
   });
 };
 
@@ -51,14 +53,11 @@ const update = async (id: string, data: Partial<UserType>) => {
 
 const deleteById = async (id: string) => {
   return new Promise((resolve, reject) => {
-    const userData = getNewUserData()
+    const userData = getNewUserData();
     const newUserData = userData.filter((user) => user.id !== id);
 
     setNewUserData(newUserData);
-    console.log("11");
-
     if (userData.length === newUserData.length) {
-      console.log("111");
       reject(`No todo with id ${id} found`);
     }
     console.log("141");

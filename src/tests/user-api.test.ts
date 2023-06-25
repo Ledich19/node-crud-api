@@ -2,12 +2,12 @@ import supertest from "supertest";
 import app from "../app.js";
 import { UserType } from "../app/types.js";
 import { setNewUserData } from "../data/users.js";
-import { initialUsersData, usersInDb } from "./test_helper.js";
+import { NO_UUID_ID, initialUsersData, nonExistingId, usersInDb } from "./test_helper.js";
 
 const api = supertest(app);
 
-beforeEach( async () => {  
- await setNewUserData(initialUsersData);
+beforeEach(async () => {
+  await setNewUserData(initialUsersData);
 });
 
 describe("User API GET", () => {
@@ -109,34 +109,48 @@ describe("User API POST", () => {
 });
 
 // describe("User API PUT", () => {
-
+// test("return error 400  if id no uuid", async () => {});
+// test("return error 404  if user don't exist", async () => {});
 // });
 
 describe("User API DELETE", () => {
   beforeAll(() => {
     setNewUserData(initialUsersData);
   });
-  test('a note can be deleted code (204)', async () => {
+  test("DELETE: a note can be deleted return code (204)", async () => {
     const usersAtStart = await usersInDb();
-    const userToDelete = usersAtStart[0]
-  
-    await api
-      .delete(`/api/users/${userToDelete.id}`)
-      .expect(204)
-  
+    const userToDelete = usersAtStart[0];
+    await api.delete(`/api/users/${userToDelete.id}`).expect(204);
     const usersAtEnd = await usersInDb();
-  
-    expect(usersAtEnd).toHaveLength(
-      initialUsersData.length - 1
-    )
-  
-    const usersId = usersAtEnd.map((user) => user.id)
-  
-    expect(usersId).not.toContain(userToDelete.id)
-  })
+    expect(usersAtEnd).toHaveLength(initialUsersData.length - 1);
+    const usersId = usersAtEnd.map((user) => user.id);
+    expect(usersId).not.toContain(userToDelete.id);
+  });
+  test("DELETE: return error 400  if id no uuid", async () => {
+    const usersAtStart = await usersInDb();
+    const usersAtStartLen = usersAtStart.length;
+    await api.delete(`/api/users/${NO_UUID_ID}`).expect(400);
+    const usersAtEnd = await usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStartLen);
+    const usersId = usersAtEnd.map((user) => user.id);
+    usersAtStart.forEach((user) => {
+      expect(usersId).toContain(user.id);
+    });
+  });
+  test("DELETE: return error 404  if user don't exist", async () => {
+    const usersAtStart = await usersInDb();
+    const usersAtStartLen = usersAtStart.length;
+    const notExistId = await nonExistingId();
+    await api.delete(`/api/users/${notExistId}`).expect(404);
+    const usersAtEnd = await usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStartLen);
+    const usersId = usersAtEnd.map((user) => user.id);
+    usersAtStart.forEach((user) => {
+      expect(usersId).toContain(user.id);
+    });
+  });
 });
 
 afterAll(async () => {
   console.log("----------------");
 });
-

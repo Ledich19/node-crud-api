@@ -19,7 +19,8 @@ export const initialUsersData: UserType[] = [
 ];
 
 export const usersInDb = async (): Promise<UserType[]> => {
-  return (await userModel.getAll()) as UserType[];
+  const arr = (await userModel.getAll()) as UserType[];
+  return [...arr]
 };
 
 export const nonExistingId = async () => {
