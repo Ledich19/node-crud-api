@@ -3,7 +3,7 @@ import { UserType } from "../app/types.js";
 let usersData: UserType[] = [
   {
     id: "148f8be7-1131-460d-bb78-53be978c18bb",
-    username: "name (string, required)",
+    username: "name-1",
     age: 76,
     hobbies: [],
   },

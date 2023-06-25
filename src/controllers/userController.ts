@@ -30,19 +30,21 @@ const getUserById = async (req: IncomingMessage, res: ServerResponse) => {
 const createUser = async (req: IncomingMessage, res: ServerResponse) => {
   const body = await getDataFromRequest(req);
 
-  if (typeof body !== "string" || typeof body === "undefined") {
+  if (typeof body !== "string") {
     throw new Error("Invalid request body");
   }
 
   const bodyData = JSON.parse(body) as ReqUserType;
-
+  
+  console.log(bodyData);
   if (
     typeof bodyData.username !== "string" ||
     typeof bodyData.age !== "number" ||
     !Array.isArray(bodyData.hobbies)
-  ) {
-    res.writeHead(400, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ error: "Invalid request body" }));
+    ) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "Invalid request body ---" }));
+      return
   }
 
   const newUser = {
