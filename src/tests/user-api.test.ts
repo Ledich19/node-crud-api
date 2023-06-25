@@ -6,22 +6,8 @@ import { initialUsersData, usersInDb } from "./test_helper.js";
 
 const api = supertest(app);
 
-//   {
-//     id: "148f8be7-1131-460d-bb78-53be978c18bb",
-//     username: "name-1",
-//     age: 76,
-//     hobbies: [],
-//   },
-//   {
-//     id: "fd197a49-e76a-4532-be57-3e56ef059880",
-//     username: "name-2",
-//     age: 23,
-//     hobbies: ["hobby", "hobby-2"],
-//   },
-// ];
-beforeEach(async () => {
-  console.log("-----beforeEach---------");
-  setNewUserData(initialUsersData);
+beforeEach( async () => {  
+ await setNewUserData(initialUsersData);
 });
 
 describe("User API GET", () => {
@@ -58,6 +44,7 @@ describe("User API GET", () => {
 
 describe("User API POST", () => {
   test("a valid user can be added", async () => {
+    const usersAtStartLen = (await usersInDb()).length;
     const newUser = {
       username: "new-user-name",
       age: 99,
@@ -71,9 +58,9 @@ describe("User API POST", () => {
       .expect("Content-Type", /application\/json/);
 
     const userInDb = await usersInDb();
-    const contents = userInDb.map((user: UserType) => user.username);
-    expect(userInDb).toHaveLength(initialUsersData.length + 1);
-    expect(contents).toContain("new-user-name");
+    const names = userInDb.map((user: UserType) => user.username);
+    expect(userInDb).toHaveLength(usersAtStartLen + 1);
+    expect(names).toContain("new-user-name");
   });
   test("request can be added and return new user", async () => {
     const newUser = {
@@ -121,8 +108,33 @@ describe("User API POST", () => {
   });
 });
 
-describe("User API PUT", () => {});
-describe("User API DELETE", () => {});
+// describe("User API PUT", () => {
+
+// });
+
+describe("User API DELETE", () => {
+  beforeAll(() => {
+    setNewUserData(initialUsersData);
+  });
+  test('a note can be deleted code (204)', async () => {
+    const usersAtStart = await usersInDb();
+    const userToDelete = usersAtStart[0]
+  
+    await api
+      .delete(`/api/users/${userToDelete.id}`)
+      .expect(204)
+  
+    const usersAtEnd = await usersInDb();
+  
+    expect(usersAtEnd).toHaveLength(
+      initialUsersData.length - 1
+    )
+  
+    const usersId = usersAtEnd.map((user) => user.id)
+  
+    expect(usersId).not.toContain(userToDelete.id)
+  })
+});
 
 afterAll(async () => {
   console.log("----------------");

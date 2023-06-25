@@ -88,6 +88,7 @@ const updateUserById = async (req: IncomingMessage, res: ServerResponse) => {
 
 const deleteUserById = async (req: IncomingMessage, res: ServerResponse) => {
   const id = req.url?.split("/")[3];
+  
   const user = await userModel.getById(id || "");
 
   if (!user) {
@@ -100,7 +101,7 @@ const deleteUserById = async (req: IncomingMessage, res: ServerResponse) => {
     res.end(JSON.stringify({ error: "user not valid" }));
     return;
   }
-
+  await userModel.deleteById(id || '');
   res.writeHead(204, { "Content-Type": "application/json" });
   res.end();
 };

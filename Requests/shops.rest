@@ -40,8 +40,8 @@ Content-Type: application/json
 }
 ###
 
-DELETE http://localhost:4000/api/users/1
-Content-Type: application/json
+DELETE http://localhost:4000/api/users/148f8be7-1131-460d-bb78-53be978c18bb
+
 
 
 

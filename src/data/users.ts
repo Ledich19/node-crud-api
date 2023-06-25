@@ -16,7 +16,14 @@ let usersData: UserType[] = [
 ];
 
 export const setNewUserData = (arr: UserType[]) => {
+  console.log('usersData = arr');
+  
 usersData = arr
+
+}
+export const getNewUserData = () => {
+  
+return usersData
 }
 
 export default usersData

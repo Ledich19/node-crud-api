@@ -1,13 +1,14 @@
 import { ReqUserType, UserType } from "../app/types.js";
 import { randomUUID } from "node:crypto";
-import usersData, { setNewUserData } from "../data/users.js";
+import { getNewUserData, setNewUserData } from "../data/users.js";
 
 const getAll = async () => {
-  return new Promise((resolve) => resolve(usersData));
+  const userData = getNewUserData();
+  return new Promise((resolve) => resolve(userData));
 };
 const getById = async (id: string) => {
   return new Promise((resolve, reject) => {
-    const user = usersData.find((user) => user.id === id);
+    const user = getNewUserData().find((user) => user.id === id);
     if (user) {
       resolve(user);
     } else {
@@ -22,18 +23,18 @@ const create = async (user: ReqUserType) => {
       id: randomUUID(),
       ...user,
     };
-    usersData.push(newUser);
+    getNewUserData().push(newUser);
     resolve(newUser);
   });
 };
 
 const update = async (id: string, data: Partial<UserType>) => {
   return new Promise((resolve, reject) => {
-    const user = usersData.find((user) => user.id === id);
+    const user = getNewUserData().find((user) => user.id === id);
     if (user) {
       const newUser = Object.assign(user, data);
       setNewUserData(
-        usersData.map((user) => {
+        getNewUserData().map((user) => {
           if (user.id === id) {
             return newUser;
           } else {
@@ -50,13 +51,17 @@ const update = async (id: string, data: Partial<UserType>) => {
 
 const deleteById = async (id: string) => {
   return new Promise((resolve, reject) => {
-    const newUserData = usersData.filter((user) => user.id !== id);
+    const userData = getNewUserData()
+    const newUserData = userData.filter((user) => user.id !== id);
 
     setNewUserData(newUserData);
+    console.log("11");
 
-    if (usersData.length === newUserData.length) {
+    if (userData.length === newUserData.length) {
+      console.log("111");
       reject(`No todo with id ${id} found`);
     }
+    console.log("141");
     resolve(`Todo deleted successfully`);
   });
 };
