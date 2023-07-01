@@ -2,15 +2,19 @@ import supertest from "supertest";
 import app from "../app.js";
 import { UserType } from "../app/types.js";
 import { setNewUserData } from "../data/users.js";
-import { NO_UUID_ID, initialUsersData, nonExistingId, usersInDb } from "./test_helper.js";
+import {
+  NO_UUID_ID,
+  initialUsersData,
+  nonExistingId,
+  usersInDb,
+} from "./test_helper.js";
 
 const api = supertest(app);
 
-beforeEach(async () => {
-  await setNewUserData(initialUsersData);
-});
-
 describe("User API GET", () => {
+  beforeEach(async () => {
+    await setNewUserData(initialUsersData);
+  });
   test("GET users: users are returned as json with code 20", async () => {
     await api
       .get("/api/users")
@@ -43,6 +47,9 @@ describe("User API GET", () => {
 });
 
 describe("User API POST", () => {
+  beforeEach(async () => {
+    await setNewUserData(initialUsersData);
+  });
   test("a valid user can be added", async () => {
     const usersAtStartLen = (await usersInDb()).length;
     const newUser = {
@@ -108,14 +115,37 @@ describe("User API POST", () => {
   });
 });
 
-// describe("User API PUT", () => {
-// test("return error 400  if id no uuid", async () => {});
-// test("return error 404  if user don't exist", async () => {});
-// });
+describe("User API PUT", () => {
+  beforeEach(async () => {
+    await setNewUserData(initialUsersData);
+  });
+  const PUT_DATA = {
+    username: "update-name",
+    hobbies: ["update-hobby"],
+  };
+  test("PUT: a note can be update return code (200)", async () => {
+    const usersAtStart = await usersInDb();
+    const userToUpdate = usersAtStart[0];
+    const updatedUser = await api
+      .put(`/api/users/${userToUpdate.id}`)
+      .send(PUT_DATA)
+      .expect(200);
+    const usersAtEnd = await usersInDb();
+    expect(PUT_DATA.username).toBe(updatedUser.body.username);
+    expect(usersAtEnd.map((user) => user.username)).toContain(updatedUser.body.username);
+  });
+  test("PUT: return error 400  if id no uuid", async () => {
+    await api.put(`/api/users/${NO_UUID_ID}`).expect(400);
+  });
+  test("PUT: return error 404  if user don't exist", async () => {
+    const notExistId = await nonExistingId();
+    await api.put(`/api/users/${notExistId}`).expect(404);
+  });
+});
 
 describe("User API DELETE", () => {
-  beforeAll(() => {
-    setNewUserData(initialUsersData);
+  beforeEach(async () => {
+    await setNewUserData(initialUsersData);
   });
   test("DELETE: a note can be deleted return code (204)", async () => {
     const usersAtStart = await usersInDb();
@@ -149,8 +179,4 @@ describe("User API DELETE", () => {
       expect(usersId).toContain(user.id);
     });
   });
-});
-
-afterAll(async () => {
-  console.log("----------------");
 });

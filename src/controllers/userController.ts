@@ -64,6 +64,11 @@ const createUser = async (req: IncomingMessage, res: ServerResponse) => {
 const updateUserById = async (req: IncomingMessage, res: ServerResponse) => {
   const id = req.url?.split("/")[3];
   const body = await getDataFromRequest(req);
+  if (id && !isUUID(id)) {
+    res.writeHead(400, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: "user not valid" }));
+    return;
+  }
   const user = await userModel.getById(id || "");
   if (typeof body !== "string") {
     throw new Error("Invalid request body");
@@ -72,11 +77,6 @@ const updateUserById = async (req: IncomingMessage, res: ServerResponse) => {
   if (!user) {
     res.writeHead(404, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ error: "user does not exist" }));
-    return;
-  }
-  if (id && !isUUID(id)) {
-    res.writeHead(400, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ error: "user not valid" }));
     return;
   }
 
