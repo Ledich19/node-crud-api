@@ -44,6 +44,13 @@ describe("User API GET", () => {
     const content = response.body;
     expect(content.id).toContain(userInDbId);
   });
+  test("GET by id: return error 400  if id no uuid", async () => {
+    await api.get(`/api/users/${NO_UUID_ID}`).expect(400);
+  });
+  test("GET by id: return error 404  if user don't exist", async () => {
+    const notExistId = await nonExistingId();
+    await api.get(`/api/users/${notExistId}`).expect(404);
+  });
 });
 
 describe("User API POST", () => {

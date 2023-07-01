@@ -2,6 +2,15 @@ import { UserType } from "../app/types.js";
 import userModel from "../models/userModel.js";
 
 export const NO_UUID_ID = "148f8be7-113-460-bb7-53be978c18bb";
+export const NEW_USER = {
+  username: "new-user-name",
+  age: 99,
+  hobbies: ["user-hobby"],
+};
+export const UPDATE_FOR_USER = {
+  username: "new-user-name",
+};
+
 
 export const initialUsersData: UserType[] = [
   {

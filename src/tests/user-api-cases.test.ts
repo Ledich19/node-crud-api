@@ -2,28 +2,16 @@ import supertest from "supertest";
 import app from "../app.js";
 import { UserType } from "../app/types.js";
 import { setNewUserData } from "../data/users.js";
-import {
-  NO_UUID_ID,
-  initialUsersData,
-  nonExistingId,
-  usersInDb,
-} from "./test_helper.js";
+import { NEW_USER, UPDATE_FOR_USER } from "./test_helper.js";
 
 const api = supertest(app);
 
-describe("Case 1", () => {
+describe("scenarios", () => {
   beforeAll(async () => {
     await setNewUserData([]);
   });
   let createdUser: UserType;
-  const NEW_USER = {
-    username: "new-user-name",
-    age: 99,
-    hobbies: ["user-hobby"],
-  };
-  const UPDATE_FOR_USER = {
-    username: "new-user-name",
-  };
+  
   test("Get all records with a GET api/users request", async () => {
     const response = await api
       .get("/api/users")
@@ -48,7 +36,6 @@ describe("Case 1", () => {
     expect(response.body).toEqual({ ...NEW_USER, id: createdUser.id });
   });
   test("We try to update the created record with a PUT api/users/{userId}request", async () => {
-  
     const response = await api
       .put(`/api/users/${createdUser.id}`)
       .send(UPDATE_FOR_USER)
