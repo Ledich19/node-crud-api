@@ -4,9 +4,9 @@ import http from "node:http";
 import { availableParallelism } from "node:os";
 import app from "./app.js";
 
-const PORT = 4000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 const numCPUs = availableParallelism();
-const currentWorker = 1;
+let currentWorker = 1;
 
 
 if (cluster.isPrimary) {
@@ -23,6 +23,8 @@ if (cluster.isPrimary) {
 
   const server = http.createServer((req, res) => {
     const workerPort = PORT + currentWorker;
+    currentWorker += 1
+    if (currentWorker > numCPUs) currentWorker = 1
     const redirectUrl = `http://localhost:${workerPort}${req.url}`;
 
     const requestOptions = {

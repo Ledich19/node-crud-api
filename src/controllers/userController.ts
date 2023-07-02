@@ -121,9 +121,7 @@ const usersController = (req: IncomingMessage, res: ServerResponse) => {
     updateUserById(req, res);
   } else if (isId && method === "DELETE") {
     deleteUserById(req, res);
-  } else {
-    throw new Error("Сделай нормальное завершение");
-  }
+  } 
 };
 
 export default usersController;
