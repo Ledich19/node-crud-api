@@ -36,7 +36,6 @@ const createUser = async (req: IncomingMessage, res: ServerResponse) => {
 
   const bodyData = JSON.parse(body) as ReqUserType;
   
-  console.log(bodyData);
   if (
     typeof bodyData.username !== "string" ||
     typeof bodyData.age !== "number" ||
@@ -52,8 +51,6 @@ const createUser = async (req: IncomingMessage, res: ServerResponse) => {
     age: bodyData.age,
     hobbies: bodyData.hobbies,
   };
-
-  console.log("POST", newUser);
 
   const createdUser = await userModel.create(newUser);
 

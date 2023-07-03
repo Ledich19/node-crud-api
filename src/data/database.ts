@@ -17,7 +17,7 @@ let database: UserType[] = [
   },
 ];
 
-let dbServer: http.Server | null = null; // Хранит ссылку на сервер базы данных
+let dbServer: http.Server | null = null; 
 
 const startDatabaseServer = (port: number) => {
   return new Promise<void>((resolve, reject) => {
@@ -42,11 +42,11 @@ const startDatabaseServer = (port: number) => {
 
     dbServer.listen(port, () => {
       console.log(`Database server is listening on port ${port}`);
-      resolve(); // Разрешаем промис после запуска сервера
+      resolve();
     });
 
     dbServer.on("error", (error) => {
-      reject(error); // Отклоняем промис в случае ошибки запуска сервера
+      reject(error);
     });
   });
 };

@@ -123,7 +123,6 @@ const deleteById = async (id: string) => {
     if (userData.length  === newUserData.length) {
       reject(`No todo with id ${id} found`);
     }
-    console.log("141");
     resolve(`Todo deleted successfully`);
   });
 };
