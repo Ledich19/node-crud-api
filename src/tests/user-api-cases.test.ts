@@ -1,16 +1,20 @@
 import supertest from "supertest";
 import app from "../app.js";
 import { UserType } from "../app/types.js";
-import { setNewUserData } from "../data/users.js";
 import { NEW_USER, UPDATE_FOR_USER } from "./test_helper.js";
-
+import  { startDatabaseServer, stopDatabaseServer } from "../data/database.js";
+import { setNewUserData } from "../models/userModel.js";
 const api = supertest(app);
 
+beforeAll(async () => {
+  await startDatabaseServer(4444)
+  await setNewUserData([]);
+});
+afterAll(async() => {
+  await stopDatabaseServer()
+})
+let createdUser: UserType;
 describe("scenarios", () => {
-  beforeAll(async () => {
-    await setNewUserData([]);
-  });
-  let createdUser: UserType;
   
   test("Get all records with a GET api/users request", async () => {
     const response = await api

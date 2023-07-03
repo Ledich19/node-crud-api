@@ -1,15 +1,23 @@
 import supertest from "supertest";
 import app from "../app.js";
 import { UserType } from "../app/types.js";
-import { setNewUserData } from "../data/users.js";
+
 import {
   NO_UUID_ID,
   initialUsersData,
   nonExistingId,
   usersInDb,
 } from "./test_helper.js";
-
+import { startDatabaseServer, stopDatabaseServer } from "../data/database.js";
+import { setNewUserData } from "../models/userModel.js";
 const api = supertest(app);
+beforeAll(async ()=> {
+  setNewUserData
+  await startDatabaseServer(4444)
+})
+afterAll(async() => {
+  await stopDatabaseServer()
+})
 
 describe("User API GET", () => {
   beforeEach(async () => {
@@ -159,7 +167,7 @@ describe("User API DELETE", () => {
     const userToDelete = usersAtStart[0];
     await api.delete(`/api/users/${userToDelete.id}`).expect(204);
     const usersAtEnd = await usersInDb();
-    expect(usersAtEnd).toHaveLength(initialUsersData.length - 1);
+    expect(usersAtEnd).toHaveLength(usersAtStart.length - 1);
     const usersId = usersAtEnd.map((user) => user.id);
     expect(usersId).not.toContain(userToDelete.id);
   });
