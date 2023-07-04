@@ -12,11 +12,15 @@ Execute the following command to install the required dependencies:
 ```npm i```
 
 ## Available commands in the project:
-__build__: Compiles the project.
-__start:dev__: Launches the project in development mode using Nodemon in single mode.
-__start:prod__: Compiles the project using TypeScript and runs the compiled index.js file.
-__start:multi__: Launches the project in development mode using Nodemon in scalable mode with cluster support.
-__test__: Runs tests using Jest with detailed output and sequential execution. Execute the following command:
+__build__ Compiles the project.
+
+__start:dev__ Launches the project in development mode using Nodemon in single mode.
+
+__start:prod__ Compiles the project using TypeScript and runs the compiled index.js file.
+
+__start:multi__ Launches the project in development mode using Nodemon in scalable mode with cluster support.
+
+__test__ Runs tests using Jest with detailed output and sequential execution. Execute the following command:
 
 ## API Documentation
 
