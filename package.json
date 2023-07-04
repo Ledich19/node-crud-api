@@ -7,7 +7,7 @@
   "scripts": {
     "build": "npx tsc",
     "start:dev": "cross-env NODE_ENV=one npx nodemon",
-    "start:prod": "cross-env npm run build && build/main",
+    "start:prod": "npm run build && node ./dist/index.js",
     "start:multi": "cross-env NODE_ENV=multi npx nodemon",
     "lint": "npx eslint ./src",
     "format": "npx eslint ./src --fix",
