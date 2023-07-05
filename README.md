@@ -12,15 +12,15 @@ Execute the following command to install the required dependencies:
 ```npm i```
 
 ## Available commands in the project:
-**build** Compiles the project.
+`build` Compiles the project.
 
-**start:dev** Launches the project in development mode using Nodemon in single mode.
+`start:dev` Launches the project in development mode using Nodemon in single mode.
 
-**start:prod** Compiles the project using TypeScript and runs the compiled index.js file.
+`start:prod` Compiles the project using TypeScript and runs the compiled index.js file.
 
-**start:multi** Launches the project in development mode using Nodemon in scalable mode with cluster support.
+`start:multi` Launches the project in development mode using Nodemon in scalable mode with cluster support.
 
-**test** Runs tests using Jest with detailed output and sequential execution. Execute the following command:
+`test` Runs tests using Jest with detailed output and sequential execution. Execute the following command:
 
 ## API Documentation
 
