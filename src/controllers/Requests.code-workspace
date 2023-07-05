@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "Requests",
+			"path": "../../../tw_delivery_app/server/Requests"
+		},
+		{
+			"name": "node-crud-api",
+			"path": "../.."
+		}
+	],
+	"settings": {}
+}

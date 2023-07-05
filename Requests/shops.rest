@@ -1,0 +1,47 @@
+GET http://localhost:4000/api/users
+###
+
+GET http://localhost:4000/api/users/148f8be7-1131-460d-bb78-53be978c18bb
+###
+
+POST http://localhost:4000/api/users
+Content-Type: application/json
+
+{
+  "username": "new user",
+  "age": 30,
+  "hobbies": ["ho-1", "ho-2"]
+}
+###
+
+POST http://localhost:4000/api/users
+Content-Type: application/json
+
+{
+  "username": "new user",
+  "age": "df",
+  "hobbies": ["ho-1", "ho-2"]
+}
+###
+POST http://localhost:4000/api/users
+Content-Type: application/json
+
+{
+  "age": 55,
+  "hobbies": ["ho-1", "ho-2"]
+}
+###
+
+PUT http://localhost:4000/api/users/148f8be7-1131-460d-bb78-53be978c18bb
+Content-Type: application/json
+
+{
+  "hobbies": ["ho-1", "ho-2", "ho-3", "ho-4"]
+}
+###
+
+DELETE http://localhost:4000/api/users/148f8be7-1131-460d-bb78-53be978c18bb
+
+
+
+
